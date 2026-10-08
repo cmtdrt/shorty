@@ -20,7 +20,7 @@ export default function App() {
 
   return (
     <main>
-      <h1>Shorty</h1>
+      <h1>Shorty modifié !</h1>
       <form onSubmit={shorten}>
         <input type="url" value={url} onChange={(e) => setUrl(e.target.value)} required />
         <button>Raccourcir</button>
