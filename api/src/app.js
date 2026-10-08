@@ -4,6 +4,8 @@ import { randomBytes } from 'node:crypto';
 
 export const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
 export const app = express();
+export const lorem = 'Ipsum';
+
 app.use(express.json());
 
 app.get('/health', async (req, res) => {
