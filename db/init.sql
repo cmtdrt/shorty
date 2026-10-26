@@ -6,4 +6,5 @@ CREATE TABLE links (
 
 INSERT INTO links (code, url, clicks) VALUES
     ('docker', 'https://docs.docker.com/', 12),
-    ('ynov', 'https://www.ynov.com/', 5);
+    ('ynov', 'https://www.ynov.com/', 5),
+    ('demo', 'https://www.linkedin.com/in/drouetclement/', 1);
