@@ -18,6 +18,9 @@ services:
     container_name: api
     build: ./api
     init: true
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
     environment:
       DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@db:5432/postgres
     depends_on:
@@ -35,8 +38,13 @@ services:
   front:
     container_name: front
     build: ./front
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    tmpfs:
+      - /tmp
     ports:
-      - "8080:80"
+      - "8080:8080"
     depends_on:
       - api
     networks:

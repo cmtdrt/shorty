@@ -46,3 +46,21 @@ Sans la surcharge, la stack tourne avec le code figé dans les images : l'API es
 ```bash
 docker compose -f compose.yaml up -d --build
 ```
+
+## Sécurité
+
+Analyse Trivy (`--severity HIGH,CRITICAL`) des images de production, reconstruites avec `docker compose -f compose.yaml build --pull`. Aucune vulnérabilité CRITICAL. Vulnérabilités HIGH restantes :
+
+### `shorty-api`
+
+| Composant | Vulnérabilités | Version corrigée | Décision |
+|---|---|---|---|
+| npm, livré par `node:22-alpine` (`brace-expansion` ×5, `pacote` ×2, `ip-address`, `picomatch`, `sigstore`, `http-cache-semantics`) | 11 | oui, sauf `http-cache-semantics` | Supprimer npm de l'image finale : il ne sert qu'à `npm ci` pendant le build, pas à l'exécution de l'API. |
+| `body-parser` 2.3.0, dépendance d'Express | 1 | 2.4.0 | Corriger : mettre à jour la dépendance dans `package-lock.json` (`npm update body-parser`). |
+
+### `shorty-front`
+
+| Composant | Vulnérabilités | Version corrigée | Décision |
+|---|---|---|---|
+| `curl` et `libcurl` (Alpine) | 1 (CVE-2026-92392) | 8.23.0-r0 | Corriger : mettre à jour les paquets Alpine au build, ou reconstruire avec `--pull` dès que l'image de base intègre le correctif. |
+| `brotli-libs` (Alpine) | 1 (CVE-2026-111497) | 1.2.1-r0 | Même décision que pour `curl`. |
