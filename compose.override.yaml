@@ -4,6 +4,7 @@ services:
       - "5432:5432"
   api:
     command: ["node", "--watch", "src/server.js"]
+    read_only: false
     ports:
       - "3000:3000"
     develop:

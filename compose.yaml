@@ -3,7 +3,9 @@ services:
     container_name: db
     image: postgres:17-alpine
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_password
     volumes:
       - db-data:/var/lib/postgresql/data
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -56,3 +58,7 @@ volumes:
 networks:
   back:
   front:
+
+secrets:
+  db_password:
+    environment: POSTGRES_PASSWORD
