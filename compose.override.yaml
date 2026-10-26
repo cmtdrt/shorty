@@ -6,10 +6,13 @@ services:
     command: ["node", "--watch", "src/server.js"]
     ports:
       - "3000:3000"
-    volumes:
-      - ./api:/app
-      - /app/node_modules
-      # On aurait pu simplement ne monter que le code via "./api/src:/app/src", le node_modules étant déjà dans l'image au niveau de /app.
+    develop:
+      watch:
+        - action: sync
+          path: ./api/src
+          target: /app/src
+        - action: rebuild
+          path: ./api/package.json
   front:
     build:
       target: dev

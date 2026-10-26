@@ -31,10 +31,10 @@ En prod, `npm run build` produit des fichiers statiques dans `dist/`. Il faut un
 
 ## Lancer avec Docker
 
-Une fois `.env` créé à la racine (`cp .env.example .env`, renseigner `POSTGRES_PASSWORD`), une seule commande démarre la stack de dev. Compose charge `compose.yaml` et `compose.override.yaml` tout seul :
+Une fois `.env` créé à la racine (`cp .env.example .env`, renseigner `POSTGRES_PASSWORD`), une seule commande démarre la stack de dev. Compose charge `compose.yaml` et `compose.override.yaml` tout seul. `--watch` synchronise `api/src` dans le conteneur et reconstruit l'image si `package.json` change :
 
 ```bash
-docker compose up -d --build
+docker compose up --watch
 ```
 
 - Front (Vite) : http://localhost:5173
