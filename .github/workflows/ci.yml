@@ -33,6 +33,13 @@ jobs:
       - name: Build
         run: docker compose -f compose.yaml build
 
+      - name: Scan
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+           -v trivy-cache:/root/.cache aquasec/trivy image --severity CRITICAL --ignore-unfixed --exit-code 1 "$DOCKERHUB_USERNAME/shorty-api:$TAG"
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+           -v trivy-cache:/root/.cache aquasec/trivy image --severity CRITICAL --ignore-unfixed --exit-code 1 "$DOCKERHUB_USERNAME/shorty-front:$TAG"
+
       - name: Publish
         env:
           DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
