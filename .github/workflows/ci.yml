@@ -1,0 +1,27 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    env:
+      POSTGRES_PASSWORD: shorty
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Base
+        run: docker compose up -d --wait db
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Tests
+        working-directory: api
+        env:
+          DATABASE_URL: postgres://postgres:shorty@localhost:5432/postgres
+        run: |
+          npm ci
+          npm test
