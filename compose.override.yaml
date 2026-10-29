@@ -14,6 +14,9 @@ services:
           target: /app/src
         - action: rebuild
           path: ./api/package.json
+    # Alternative à develop.watch (sync de ./api/src) : un bind mount.
+    # volumes:
+    #   - ./api/src:/app/src
   front:
     build:
       target: dev
