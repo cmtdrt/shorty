@@ -2,6 +2,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - "v*"
 
 jobs:
   ci:
@@ -30,3 +32,10 @@ jobs:
 
       - name: Build
         run: docker compose -f compose.yaml build
+
+      - name: Publish
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+        run: |
+          echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+          docker compose -f compose.yaml push api front
