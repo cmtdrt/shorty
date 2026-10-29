@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       POSTGRES_PASSWORD: shorty
+      DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+      TAG: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v7
 
@@ -25,3 +27,6 @@ jobs:
         run: |
           npm ci
           npm test
+
+      - name: Build
+        run: docker compose -f compose.yaml build
